@@ -906,8 +906,12 @@ async function run() {
     const run = utils.getRun(octokit);
     const token = utils.getToken();
 
-
-    const definitions = JSON.parse(core.getInput('post_to_pr_definition'));
+    const rawDefinition = core.getInput('post_to_pr_definition');
+    try{
+      const definitions = JSON.parse(rawDefinition);
+    } catch(error) {
+      core.setFailed(`Erro parsing json config \n${rawDefinition}\n error : ${error}`);
+    }
 
     var pr_message = ""
     definitions.array.forEach(definition => {

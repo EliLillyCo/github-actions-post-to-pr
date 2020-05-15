@@ -18,8 +18,10 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         post_to_pr_definition: |
-          {
-            "message_file": "./unit_test_result.txt",
-            "title": "Unit Test",
-          }
+          [
+            {
+              "message_file": "./unit_test_result.txt",
+              "title": "Unit Test"
+            }
+          ]
       if: github.event_name == 'pull_request'
