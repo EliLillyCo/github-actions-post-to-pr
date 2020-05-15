@@ -18,6 +18,7 @@ async function run() {
       const definitions = JSON.parse(rawDefinition);
     } catch(error) {
       core.setFailed(`Erro parsing json config \n${rawDefinition}\n error : ${error}`);
+      return
     }
 
     var pr_message = ""
