@@ -13,11 +13,8 @@ jobs:
     - run: env
     - run: npm ci
     - run: npm test | tee unit_test_result.txt
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
+    - name: "Post to PR"
+      uses: ./
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         post_to_pr_definition: |
@@ -25,4 +22,4 @@ jobs:
             "message_file": "./unit_test_result.txt",
             "title": "Unit Test",
           }
-    if: github.event_name == 'pull_request'
+      if: github.event_name == 'pull_request'
