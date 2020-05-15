@@ -14,8 +14,9 @@ async function run() {
     const token = utils.getToken();
 
     const rawDefinition = core.getInput('post_to_pr_definition');
+    var definitions;
     try{
-      const definitions = JSON.parse(rawDefinition);
+      definitions = JSON.parse(rawDefinition);
     } catch(error) {
       core.setFailed(`Erro parsing json config \n${rawDefinition}\n error : ${error}`);
       return
