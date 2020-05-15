@@ -5,6 +5,9 @@ inputs:
     description: 'Post to PR Definition Document (json)'
     required: true
     default: '[]'
+  github_token:
+    description: 'Github Token (${{ secrets.GITHUB_TOKEN }})'
+    required: true
 runs:
   using: 'node12'
   main: 'dist/index.js'

@@ -1,7 +1,7 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "name": "post-to-pr",
+  "version": "0.0.1",
+  "description": "Post to pull request with previous build results",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
@@ -10,25 +10,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/EliLillyCo/LRL_github_actions_post_to_pr.git"
   },
   "keywords": [
     "GitHub",
     "Actions",
     "JavaScript"
   ],
-  "author": "GitHub",
-  "license": "MIT",
+  "author": "Eli Lilly",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/EliLillyCo/LRL_github_actions_post_to_pr"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/EliLillyCo/LRL_github_actions_post_to_pr",
   "dependencies": {
-    "@actions/core": "^1.1.1"
+    "@actions/core": "^1.1.1",
+    "@actions/github": "2.2.0"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",
     "eslint": "^6.3.0",
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "@octokit/fixtures": "21.0.5"
   }
 }
