@@ -6,8 +6,11 @@ inputs:
     required: true
     default: '[]'
   github_token:
-    description: 'Github Token '
+    description: Github Token
     required: true
+  comment_url:
+    description: Where to post pr to
+    required: true 
 runs:
   using: 'node12'
   main: 'dist/index.js'

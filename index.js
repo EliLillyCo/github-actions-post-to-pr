@@ -24,7 +24,7 @@ async function run() {
     var pr_message = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    axios.post(github.event.pull_request.comments_url, {
+    axios.post(core.getInput("comment_url"), {
       data: {
         "body": pr_message
       },

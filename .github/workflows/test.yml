@@ -17,6 +17,7 @@ jobs:
       uses: ./
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        comment_url: ${{ github.event.pull_request.comments_url }}
         post_to_pr_definition: |
           [
             {
