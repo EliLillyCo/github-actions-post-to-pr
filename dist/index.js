@@ -916,12 +916,12 @@ async function run() {
     }
 
     var pr_message = ""
-    definitions.array.forEach(definition => {
+    for (const definiton of definitions) { 
       pr_message += pullRequest.getPrMessage(
         octokit,
         run,
         pullRequest.processDefinition(definition))
-    });
+    }
 
 
     axios.post(github.event.pull_request.comments_url, {
