@@ -67,7 +67,7 @@ test('test get pull request message no branch runs', async() => {
     });
 
 
-    expect(await pr.getPrMessage(
+    expect(await pr.getPrMessageBlock(
         new github.GitHub("1234"),
         {
             "workflow_id": 12345
@@ -115,7 +115,7 @@ test('test get pull request message no artifacts', async() => {
         "artifacts": []
     });
 
-expect(await pr.getPrMessage(
+expect(await pr.getPrMessageBlock(
     new github.GitHub("1234"),
     {
         "workflow_id": 1234
@@ -170,7 +170,7 @@ test('test get pull request message', async() => {
         ]
     });
 
-expect(await pr.getPrMessage(
+expect(await pr.getPrMessageBlock(
     new github.GitHub("1234"),
     {
         "workflow_id": 1234
@@ -228,7 +228,7 @@ test('test get pull request with modifier', async() => {
         ]
     });
 
-expect(await pr.getPrMessage(
+expect(await pr.getPrMessageBlock(
     new github.GitHub("1234"),
     {
         "workflow_id": 1234
@@ -240,6 +240,63 @@ expect(await pr.getPrMessage(
         "modifier": "grep logline1",
         "compare_branches": ["master"]
     })).toEqual(
+`# Some Test Title
+## Previous master branch:
+
+\`\`\`
+logline1
+
+\`\`\`
+
+## This change:
+
+\`\`\`
+logline1
+
+\`\`\`
+`);
+
+});
+
+
+test('test get pull request message', async() => {
+
+    process.env.GITHUB_REPOSITORY = "test/test"
+    process.env.GITHUB_RUN_ID = "123"
+
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/runs/123")
+    .reply(200,     {
+        "workflow_id": 1234
+    });
+
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=conclusion")
+    .reply(200, {
+        "workflow_runs": [{"id": 12345}]
+    });
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/runs/12345/artifacts")
+    .reply(200, {
+        "total_count": 1,
+        "artifacts": [
+            {
+                "name": "some-test-title",
+
+                "archive_download_url": `file://./${testLogFile}.zip`
+            }
+        ]
+    });
+
+expect(await pr.getPrMessage(
+    new github.GitHub("1234"),
+    [{
+        "message_file": "./" + testLogFile,
+        "title": "Some Test Title",
+        "artifact_name": "some-test-title",
+        "modifier": "grep logline1",
+        "compare_branches": ["master"]
+    }])).toEqual(
 `# Some Test Title
 ## Previous master branch:
 

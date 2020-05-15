@@ -64,7 +64,7 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
   
   }
   
-async function getPrMessage(octokit, run, definition) {
+async function getPrMessageBlock(octokit, run, definition) {
 
     var message = "";
 
@@ -94,35 +94,53 @@ async function getPrMessage(octokit, run, definition) {
     return message
 }
   
-  function processDefinition(definition) {
-  
-    assert(
-      "message_file" in definition &&
-      "title" in definition,
-      "message_file & title must be included in the json definition"
-    )
-    
-    if (!("artifact_name" in definition)) {
-      definition["artifact_name"] = definition["title"]
-      .replace(/[^0-9a-z ]/gi, "")
-      .replace(/ /g, "-")
-      .toLowerCase();
+function processDefinition(definition) {
+
+assert(
+    "message_file" in definition &&
+    "title" in definition,
+    "message_file & title must be included in the json definition"
+)
+
+if (!("artifact_name" in definition)) {
+    definition["artifact_name"] = definition["title"]
+    .replace(/[^0-9a-z ]/gi, "")
+    .replace(/ /g, "-")
+    .toLowerCase();
+}
+
+if (!("compare_branches" in definition)) {
+    definition["compare_branches"] = ["master"];
+}
+
+if (!("modifier" in definition)) {
+    definition["modifier"] = null;
+}
+
+return definition
+}
+
+
+async function getPrMessage(octokit, definitions) {
+
+    const run = await utils.getRun(octokit);
+
+    var pr_message = ""
+    for (const definition of definitions) { 
+      pr_message += await getPrMessageBlock(
+        octokit,
+        run,
+        processDefinition(definition))
     }
-  
-    if (!("compare_branches" in definition)) {
-      definition["compare_branches"] = ["master"];
-    }
-  
-    if (!("modifier" in definition)) {
-      definition["modifier"] = null;
-    }
-  
-    return definition
-  }
+
+    return pr_message
+}
+
 
 
 module.exports = {
     readArchivedFile,
+    getPrMessageBlock,
     getPrMessage,
     processDefinition
 }

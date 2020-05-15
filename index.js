@@ -8,9 +8,8 @@ const axios = require('axios');
 
 async function run() {
   try { 
-
     const octokit = utils.getClient();
-    const run = utils.getRun(octokit);
+
     const token = utils.getToken();
 
     const rawDefinition = core.getInput('post_to_pr_definition');
@@ -22,13 +21,7 @@ async function run() {
       return
     }
 
-    var pr_message = ""
-    for (const definiton of definitions) { 
-      pr_message += pullRequest.getPrMessage(
-        octokit,
-        run,
-        pullRequest.processDefinition(definition))
-    }
+    var pr_message = await pullRequest.getPrMessage(octokit, definitions);
 
 
     axios.post(github.event.pull_request.comments_url, {
@@ -47,7 +40,7 @@ async function run() {
 
   } 
   catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
