@@ -13610,7 +13610,7 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
   
     const token = utils.getToken();
 
-    cmd = `curl ${download_url} -H "Authorization: token ${token}" | unzip -p - ${file}`
+    var cmd = `curl ${download_url} -H "Authorization: token ${token}" | unzip -p - ${file}`
 
     if (modifier != null) {
         cmd += `| ${modifier}`

@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint index.js",
     "package": "ncc build index.js -o dist",
-    "test": "eslint index.js && jest"
+    "test": "eslint *.js && jest --collect-coverage"
   },
   "repository": {
     "type": "git",
@@ -28,9 +28,10 @@
     "@actions/github": "2.2.0"
   },
   "devDependencies": {
+    "@octokit/fixtures": "21.0.5",
     "@zeit/ncc": "^0.20.5",
     "eslint": "^6.3.0",
-    "jest": "^24.9.0",
-    "@octokit/fixtures": "21.0.5"
+    "eslint-plugin-jest": "^23.13.0",
+    "jest": "^24.9.0"
   }
 }

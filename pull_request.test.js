@@ -148,7 +148,7 @@ logline5
 });
 
 
-test('test get pull request message', async() => {
+test('test get pull request message without modifier', async() => {
 
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"
@@ -259,7 +259,7 @@ logline1
 });
 
 
-test('test get pull request message', async() => {
+test('test get pull request message with modifier', async() => {
 
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"

@@ -23,7 +23,7 @@ test('apply message modifier', async() => {
 test('get workflow run', async() => {
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"
-    const mock = octokitFixtures.nock("https://api.github.com")
+    octokitFixtures.nock("https://api.github.com")
     .get("/repos/test/test/actions/runs/123")
     .reply(200, {
         "workflow_id": 772800
