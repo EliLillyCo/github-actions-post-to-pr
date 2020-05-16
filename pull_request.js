@@ -1,5 +1,4 @@
 const github = require('@actions/github');
-const artifact = require('@actions/artifact');
 const utils = require('./utils');
 const assert = require('assert').strict;
 const fs = require('fs');
@@ -149,23 +148,10 @@ async function postPrMessage(octokit, prNumber, prMessage) {
 }
 
 
-async function uploadArtifacts(definitions) {
-    const artifactClient = artifact.create();
-    for (const definition of definitions) {
-      await artifactClient.uploadArtifact(definition["artifact_name"], 
-                                          [
-                                            definition["message_file"]
-                                          ],
-                                          ".")
-    }
-}
-
-
 module.exports = {
     readArchivedFile,
     getPrMessageBlock,
     getPrMessage,
     processDefinition,
-    postPrMessage,
-    uploadArtifacts
+    postPrMessage
 }

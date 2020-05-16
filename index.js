@@ -24,16 +24,19 @@ async function run() {
 
     definitions = definitions.map(pullRequest.processDefinition)
 
-    var prMessage = await pullRequest.getPrMessage(octokit, definitions);
+
+    if (actionEvent.pull_request) {
+      var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    await pullRequest.postPrMessage(
-      octokit,
-      actionEvent.pull_request.number,
-      prMessage
-    )
+      await pullRequest.postPrMessage(
+        octokit,
+        actionEvent.pull_request.number,
+        prMessage
+      )
+    }
 
-    await pullRequest.uploadArtifacts(definitions);
+    await utils.uploadArtifacts(definitions);
 
   } 
   catch (error) {
