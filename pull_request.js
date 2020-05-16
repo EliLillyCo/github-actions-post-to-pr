@@ -131,7 +131,7 @@ async function getPrMessage(octokit, definitions) {
         prMessage += await getPrMessageBlock(
             octokit,
             run,
-            processDefinition(definition))
+            definition)
     }
 
     return prMessage

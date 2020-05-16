@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/EliLillyCo/LRL_github_actions_post_to_pr",
   "dependencies": {
+    "@actions/artifact": "^0.3.2",
     "@actions/core": "^1.1.1",
     "@actions/github": "2.2.0",
     "axios": "^0.19.2"
