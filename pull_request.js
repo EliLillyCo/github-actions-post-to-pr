@@ -1,4 +1,5 @@
 const github = require('@actions/github');
+const crypto = require('crypto');
 const utils = require('./utils');
 const assert = require('assert').strict;
 const fs = require('fs');
@@ -53,15 +54,19 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
     }
   
     const token = utils.getToken();
-
-    var cmd = `curl ${download_url} -H "Authorization: token ${token}" | unzip -p - ${file}`
+    const tempFile = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
+    execSync(`curl -L -H "Authorization: token ${token}" ${download_url} -o ${tempFile}`)
+    var cmd = `unzip -p ${tempFile}`
 
     if (modifier != null) {
-        cmd += `| ${modifier}`
+        cmd += ` | ${modifier}`
     }
 
-    return execSync(cmd).toString()
-  
+    const output = execSync(cmd).toString()
+
+    fs.unlinkSync(tempFile)
+
+    return output
   }
   
 async function getPrMessageBlock(octokit, run, definition) {

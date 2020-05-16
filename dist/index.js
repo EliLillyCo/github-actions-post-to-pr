@@ -13570,6 +13570,7 @@ if (process.platform === 'linux') {
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
 const github = __webpack_require__(469);
+const crypto = __webpack_require__(417);
 const utils = __webpack_require__(278);
 const assert = __webpack_require__(357).strict;
 const fs = __webpack_require__(747);
@@ -13624,15 +13625,19 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
     }
   
     const token = utils.getToken();
-
-    var cmd = `curl ${download_url} -H "Authorization: token ${token}" | unzip -p - ${file}`
+    const tempFile = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
+    execSync(`curl -L -H "Authorization: token ${token}" ${download_url} -o ${tempFile}`)
+    var cmd = `unzip -p ${tempFile}`
 
     if (modifier != null) {
-        cmd += `| ${modifier}`
+        cmd += ` | ${modifier}`
     }
 
-    return execSync(cmd).toString()
-  
+    const output = execSync(cmd).toString()
+
+    fs.unlinkSync(tempFile)
+
+    return output
   }
   
 async function getPrMessageBlock(octokit, run, definition) {
