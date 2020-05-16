@@ -332,3 +332,43 @@ test('post message', async() => {
         "test123"
     )).toEqual({"id": 1});
 });
+
+
+test('upload artifact', async() => {
+
+    process.env.ACTIONS_RUNTIME_TOKEN = "12334"
+    process.env.ACTIONS_RUNTIME_URL = "https://api.github.com/testupload"
+
+    octokitFixtures.nock("https://api.github.com")
+    .post(/testupload.*/)
+    .reply(200,     {
+        "id": 1
+    });
+
+
+
+    let error;
+    try {
+        await pr.uploadArtifacts(
+            [
+                {
+                    "message_file": testLogFile,
+                    "title": "Header",
+                    "artifact_name": "defaults to title",
+                    "modifier": "grep 'test'",
+                    "compare_branches": ["master"]
+                },
+                {
+                    "message_file": testLogFile,
+                    "title": "Header2",
+                    "artifact_name": "defaults to title2",
+                    "modifier": "grep 'test'",
+                    "compare_branches": ["master"]
+                }
+            ]
+        )
+    } catch (e) {
+    error = e;
+    }
+    expect(error.message).toEqual("No URL provided by the Artifact Service to upload an artifact to");
+});

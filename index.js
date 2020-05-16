@@ -1,6 +1,5 @@
 const fs = require('fs');
 const core = require('@actions/core');
-const artifact = require('@actions/artifact');
 const utils = require('./utils');
 const pullRequest = require('./pull_request');
 
@@ -34,11 +33,7 @@ async function run() {
       prMessage
     )
 
-    const artifactClient = artifact.create();
-    for (const definition of definitions) {
-      await artifactClient.uploadArtifact(definition["artifact_name"], 
-                                          definition["message_file"], ".")
-    }
+    await pullRequest.uploadArtifacts(definitions);
 
   } 
   catch (error) {
