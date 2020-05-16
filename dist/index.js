@@ -1445,16 +1445,19 @@ async function run() {
 
     definitions = definitions.map(pullRequest.processDefinition)
 
-    var prMessage = await pullRequest.getPrMessage(octokit, definitions);
+
+    if (actionEvent.pull_request) {
+      var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    await pullRequest.postPrMessage(
-      octokit,
-      actionEvent.pull_request.number,
-      prMessage
-    )
+      await pullRequest.postPrMessage(
+        octokit,
+        actionEvent.pull_request.number,
+        prMessage
+      )
+    }
 
-    await pullRequest.uploadArtifacts(definitions);
+    await utils.uploadArtifacts(definitions);
 
   } 
   catch (error) {
@@ -5010,6 +5013,7 @@ const execSync = __webpack_require__(129).execSync;
 const crypto = __webpack_require__(417);
 const github = __webpack_require__(469);
 const core = __webpack_require__(470);
+const artifact = __webpack_require__(214);
 
 function formatMarkdownBlock(text) {
   return "```\n" + text + "\n```\n"
@@ -5050,13 +5054,25 @@ function getClient() {
   return new github.GitHub(token);
 }
 
+async function uploadArtifacts(definitions) {
+  const artifactClient = artifact.create();
+  for (const definition of definitions) {
+    await artifactClient.uploadArtifact(definition["artifact_name"], 
+                                        [
+                                          definition["message_file"]
+                                        ],
+                                        ".")
+  }
+}
+
 
 module.exports = {
   formatMarkdownBlock,
   applyMessageModifier,
   getRun,
   getToken,
-  getClient
+  getClient,
+  uploadArtifacts
 }
 
 
@@ -13554,7 +13570,6 @@ if (process.platform === 'linux') {
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
 const github = __webpack_require__(469);
-const artifact = __webpack_require__(214);
 const utils = __webpack_require__(278);
 const assert = __webpack_require__(357).strict;
 const fs = __webpack_require__(747);
@@ -13704,25 +13719,12 @@ async function postPrMessage(octokit, prNumber, prMessage) {
 }
 
 
-async function uploadArtifacts(definitions) {
-    const artifactClient = artifact.create();
-    for (const definition of definitions) {
-      await artifactClient.uploadArtifact(definition["artifact_name"], 
-                                          [
-                                            definition["message_file"]
-                                          ],
-                                          ".")
-    }
-}
-
-
 module.exports = {
     readArchivedFile,
     getPrMessageBlock,
     getPrMessage,
     processDefinition,
-    postPrMessage,
-    uploadArtifacts
+    postPrMessage
 }
 
 /***/ }),

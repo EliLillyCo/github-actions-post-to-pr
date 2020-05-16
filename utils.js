@@ -3,6 +3,7 @@ const execSync = require('child_process').execSync;
 const crypto = require('crypto');
 const github = require('@actions/github');
 const core = require('@actions/core');
+const artifact = require('@actions/artifact');
 
 function formatMarkdownBlock(text) {
   return "```\n" + text + "\n```\n"
@@ -43,11 +44,23 @@ function getClient() {
   return new github.GitHub(token);
 }
 
+async function uploadArtifacts(definitions) {
+  const artifactClient = artifact.create();
+  for (const definition of definitions) {
+    await artifactClient.uploadArtifact(definition["artifact_name"], 
+                                        [
+                                          definition["message_file"]
+                                        ],
+                                        ".")
+  }
+}
+
 
 module.exports = {
   formatMarkdownBlock,
   applyMessageModifier,
   getRun,
   getToken,
-  getClient
+  getClient,
+  uploadArtifacts
 }

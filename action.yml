@@ -1,7 +1,7 @@
 name: 'Github Post to PR with Artifact Comparision'
 description: 'Post to PR comparing against previous artifacts'
 inputs:
-  post_to_pr_definition:  # id of input
+  post_to_pr_definition:
     description: 'Post to PR Definition Document (json)'
     required: true
     default: '[]'
