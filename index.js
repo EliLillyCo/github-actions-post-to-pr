@@ -14,8 +14,6 @@ async function run() {
       fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
     )
 
-    octokit.issues.createComment()
-
     const rawDefinition = core.getInput('post_to_pr_definition');
     var definitions;
     try{
@@ -30,19 +28,17 @@ async function run() {
     var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    // await pullRequest.postPrMessage(
-    //   octokit,
-    //   actionEvent.pull_request.number,
-    //   prMessage
-    // )
+    await pullRequest.postPrMessage(
+      octokit,
+      actionEvent.pull_request.number,
+      prMessage
+    )
 
-    // const artifactClient = artifact.create();
-    // for (const definition of definitions) {
-    //   await artifactClient.uploadArtifact(definition["artifact_name"], 
-    //                                       definition["message_file"], ".")
-    // }
-
-    core.setOutput('status', "success");
+    const artifactClient = artifact.create();
+    for (const definition of definitions) {
+      await artifactClient.uploadArtifact(definition["artifact_name"], 
+                                          definition["message_file"], ".")
+    }
 
   } 
   catch (error) {
