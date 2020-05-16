@@ -1842,11 +1842,11 @@ async function run() {
     var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    await pullRequest.postPrMessage(
-      octokit,
-      actionEvent.pull_request.number,
-      prMessage
-    )
+    // await pullRequest.postPrMessage(
+    //   octokit,
+    //   actionEvent.pull_request.number,
+    //   prMessage
+    // )
 
     // const artifactClient = artifact.create();
     // for (const definition of definitions) {
