@@ -1,26 +1,29 @@
-name: "units-test"
+name: "Test Post to PR"
 on:
   pull_request:
   push:
     branches:
       - master
-      - 'releases/*'
 
 jobs:
-  # unit tests
   units:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - run: env
     - run: npm ci
-    - run: npm test
-
-  # test action works running from the graph  
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./
+    - run: npm test | tee unit_test_result.txt
+    - name: "Post to PR"
+      uses: ./
       with:
-        milliseconds: 1000
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        comment_url: ${{ github.event.pull_request.comments_url }}
+        post_to_pr_definition: |
+          [
+            {
+              "message_file": "./unit_test_result.txt",
+              "title": "Unit Test",
+              "modifier": "grep -v '::debug::'"
+            }
+          ]
+      if: github.event_name == 'pull_request'

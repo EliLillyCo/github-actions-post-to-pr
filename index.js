@@ -1,98 +1,43 @@
-const core = require('@actions/core');
-const wait = require('./wait');
-const assert = require('assert').strict;
 const fs = require('fs');
-var crypto = require('crypto');
-const execSync = require('child_process').execSync;
+const core = require('@actions/core');
+const utils = require('./utils');
+const pullRequest = require('./pull_request');
 
-function formatMarkdownBlock(text) {
-  return "'''\n" + text + "\n'''\n"
-}
-
-
-function applyMessageModifier(modifier, message) {
-  if (!modifier) {
-    return message
-  }
-
-  var filename = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
-  fs.writeFileSync(filename, message);
-
-  return execSync(`cat ${filename} | ${modifier}`)
-}
-
-
-function readArchivedFile(branch, archive_name, file) {
-
-}
-
-function getPrMessage(definition) {
-
-  var message = "";
-
-  message += "# " + definition["title"] + "\n";
-
-  definition["compare_branches"].forEach(branch => {
-
-    message += `## Previous ${branch} branch:\n\n`;
-
-    const data = readArchivedFile(branch,
-                                  definition.artifact_name,
-                                  defiition.message_file)
-                                  
-    message += formatMarkdownBlock(
-      applyMessageModifier(definition["modifier"], data)
-    );
-
-
-  });
-
-  message += "This change:\n\n";
-
-  const data = fs.readFileSync(definition["message_file"], 'utf8')
-
-  message += formatMarkdownBlock(
-              applyMessageModifier(definition["modifier"], data)
-            );
-
-  return message
-}
-
-function processDefinition(definition) {
-
-  assert.assert(
-    "message_file" in definition &&
-    "title" in definition,
-    "message_file & title must be included in the json definition"
-  )
-  
-  if (!("artifact_name" in definition)) {
-    definition["artifact_name"] = definition["title"];
-  }
-
-  if (!("compare_branches" in definition)) {
-    definition["compare_branches"] = ["master"];
-  }
-
-  if (!("modifier" in definition)) {
-    definition["modifier"] = null;
-  }
-
-  return definition
-}
 
 
 async function run() {
   try { 
-    const definitions = JSON.parse(core.getInput('post_to_pr_definition'));
+    const octokit = utils.getClient();
 
-    const pr_message = ""
-    definitions.array.forEach(definition => {
-      pr_message += getPrMessage(processDefinition(definition))
-    });
+    const actionEvent = JSON.parse(
+      fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
+    )
+
+    const rawDefinition = core.getInput('post_to_pr_definition');
+    var definitions;
+    try{
+      definitions = JSON.parse(rawDefinition);
+    } catch(error) {
+      core.setFailed(`Erro parsing json config \n${rawDefinition}\n error : ${error}`);
+      return
+    }
+
+    definitions = definitions.map(pullRequest.processDefinition)
+
+    var prMessage = await pullRequest.getPrMessage(octokit, definitions);
+
+
+    await pullRequest.postPrMessage(
+      octokit,
+      actionEvent.pull_request.number,
+      prMessage
+    )
+
+    await pullRequest.uploadArtifacts(definitions);
+
   } 
   catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
