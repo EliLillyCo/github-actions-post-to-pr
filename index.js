@@ -42,6 +42,8 @@ async function run() {
     //                                       definition["message_file"], ".")
     // }
 
+    core.setOutput('status', "success");
+
   } 
   catch (error) {
     core.setFailed(error);
