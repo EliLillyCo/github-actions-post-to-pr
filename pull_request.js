@@ -139,7 +139,7 @@ async function getPrMessage(octokit, definitions) {
 
 
 async function postPrMessage(octokit, prNumber, prMessage) {
-    res = await octokit.issues.createComment({
+    const res = await octokit.issues.createComment({
         ...github.context.repo,
         issue_number: prNumber,
         body: prMessage,

@@ -1848,11 +1848,11 @@ async function run() {
       prMessage
     )
 
-    const artifactClient = artifact.create();
-    for (const definition of definitions) {
-      await artifactClient.uploadArtifact(definition["artifact_name"], 
-                                          definition["message_file"], ".")
-    }
+    // const artifactClient = artifact.create();
+    // for (const definition of definitions) {
+    //   await artifactClient.uploadArtifact(definition["artifact_name"], 
+    //                                       definition["message_file"], ".")
+    // }
 
   } 
   catch (error) {
@@ -16149,7 +16149,7 @@ async function getPrMessage(octokit, definitions) {
 
 
 async function postPrMessage(octokit, prNumber, prMessage) {
-    res = await octokit.issues.createComment({
+    const res = await octokit.issues.createComment({
         ...github.context.repo,
         issue_number: prNumber,
         body: prMessage,

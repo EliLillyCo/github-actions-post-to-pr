@@ -36,11 +36,11 @@ async function run() {
       prMessage
     )
 
-    const artifactClient = artifact.create();
-    for (const definition of definitions) {
-      await artifactClient.uploadArtifact(definition["artifact_name"], 
-                                          definition["message_file"], ".")
-    }
+    // const artifactClient = artifact.create();
+    // for (const definition of definitions) {
+    //   await artifactClient.uploadArtifact(definition["artifact_name"], 
+    //                                       definition["message_file"], ".")
+    // }
 
   } 
   catch (error) {
