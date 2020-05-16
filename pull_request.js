@@ -1,4 +1,5 @@
 const github = require('@actions/github');
+const axios = require('axios');
 const utils = require('./utils');
 const assert = require('assert').strict;
 const fs = require('fs');
@@ -125,22 +126,33 @@ async function getPrMessage(octokit, definitions) {
 
     const run = await utils.getRun(octokit);
 
-    var pr_message = ""
+    var prMessage = ""
     for (const definition of definitions) { 
-      pr_message += await getPrMessageBlock(
-        octokit,
-        run,
-        processDefinition(definition))
+        prMessage += await getPrMessageBlock(
+            octokit,
+            run,
+            processDefinition(definition))
     }
 
-    return pr_message
+    return prMessage
 }
 
+
+async function postPrMessage(octokit, prNumber, prMessage) {
+    res = await octokit.issues.createComment({
+        ...github.context.repo,
+        issue_number: prNumber,
+        body: prMessage,
+      });
+
+    return res.data;
+}
 
 
 module.exports = {
     readArchivedFile,
     getPrMessageBlock,
     getPrMessage,
-    processDefinition
+    processDefinition,
+    postPrMessage
 }

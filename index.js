@@ -1,8 +1,7 @@
+const fs = require('fs');
 const core = require('@actions/core');
-const github = require('@actions/github');
 const utils = require('./utils');
 const pullRequest = require('./pull_request');
-const axios = require('axios');
 
 
 
@@ -10,7 +9,13 @@ async function run() {
   try { 
     const octokit = utils.getClient();
 
-    const token = utils.getToken();
+    const actionEvent = JSON.parse(
+      fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
+    )
+
+    console.log(actionEvent);
+
+    octokit.issues.createComment()
 
     const rawDefinition = core.getInput('post_to_pr_definition');
     var definitions;
@@ -21,22 +26,14 @@ async function run() {
       return
     }
 
-    var pr_message = await pullRequest.getPrMessage(octokit, definitions);
+    var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    axios.post(core.getInput("comment_url"), {
-      data: {
-        "body": pr_message
-      },
-      headers: {
-        "Authorization": `token ${token}`
-      }
-    })
-    .then((response) => {
-      console.log(response);
-    }, (error) => {
-      core.setFailed(error);
-    });
+    pullRequest.postPrMessage(
+      actionEvent.pull_request.number,
+      octokit,
+      prMessage
+    )
 
   } 
   catch (error) {

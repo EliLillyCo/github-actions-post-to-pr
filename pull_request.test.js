@@ -314,3 +314,21 @@ logline1
 `);
 
 });
+
+
+test('post message', async() => {
+
+    octokitFixtures.nock("https://api.github.com")
+    .post("/repos/test/test/issues/123/comments")
+    .reply(200,     {
+        "id": 1
+    });
+
+
+
+    expect(await pr.postPrMessage(
+        new github.GitHub("1234"),
+        "123",
+        "test123"
+    )).toEqual({"id": 1});
+});

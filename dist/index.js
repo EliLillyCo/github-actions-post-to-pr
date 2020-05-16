@@ -891,11 +891,10 @@ module.exports = require("os");
 /***/ 104:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
+const fs = __webpack_require__(747);
 const core = __webpack_require__(470);
-const github = __webpack_require__(469);
 const utils = __webpack_require__(278);
 const pullRequest = __webpack_require__(657);
-const axios = __webpack_require__(53);
 
 
 
@@ -903,7 +902,13 @@ async function run() {
   try { 
     const octokit = utils.getClient();
 
-    const token = utils.getToken();
+    const actionEvent = JSON.parse(
+      fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')
+    )
+
+    console.log(actionEvent);
+
+    octokit.issues.createComment()
 
     const rawDefinition = core.getInput('post_to_pr_definition');
     var definitions;
@@ -914,22 +919,14 @@ async function run() {
       return
     }
 
-    var pr_message = await pullRequest.getPrMessage(octokit, definitions);
+    var prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
 
-    axios.post(core.getInput("comment_url"), {
-      data: {
-        "body": pr_message
-      },
-      headers: {
-        "Authorization": `token ${token}`
-      }
-    })
-    .then((response) => {
-      console.log(response);
-    }, (error) => {
-      core.setFailed(error);
-    });
+    pullRequest.postPrMessage(
+      actionEvent.pull_request.number,
+      octokit,
+      prMessage
+    )
 
   } 
   catch (error) {
@@ -10805,6 +10802,7 @@ if (process.platform === 'linux') {
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
 const github = __webpack_require__(469);
+const axios = __webpack_require__(53);
 const utils = __webpack_require__(278);
 const assert = __webpack_require__(357).strict;
 const fs = __webpack_require__(747);
@@ -10931,24 +10929,35 @@ async function getPrMessage(octokit, definitions) {
 
     const run = await utils.getRun(octokit);
 
-    var pr_message = ""
+    var prMessage = ""
     for (const definition of definitions) { 
-      pr_message += await getPrMessageBlock(
-        octokit,
-        run,
-        processDefinition(definition))
+        prMessage += await getPrMessageBlock(
+            octokit,
+            run,
+            processDefinition(definition))
     }
 
-    return pr_message
+    return prMessage
 }
 
+
+async function postPrMessage(octokit, prNumber, prMessage) {
+    res = await octokit.issues.createComment({
+        ...github.context.repo,
+        issue_number: prNumber,
+        body: prMessage,
+      });
+
+    return res.data;
+}
 
 
 module.exports = {
     readArchivedFile,
     getPrMessageBlock,
     getPrMessage,
-    processDefinition
+    processDefinition,
+    postPrMessage
 }
 
 /***/ }),
