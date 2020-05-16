@@ -30,8 +30,8 @@ async function run() {
 
 
     pullRequest.postPrMessage(
-      actionEvent.pull_request.number,
       octokit,
+      actionEvent.pull_request.number,
       prMessage
     )
 
