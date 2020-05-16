@@ -165,7 +165,7 @@ test('test get pull request message without modifier', async() => {
             {
                 "name": "some-test-title",
 
-                "archive_download_url": `file://./${testLogFile}.zip`
+                "archive_download_url": `file:///${__dirname}/${testLogFile}.zip`
             }
         ]
     });
@@ -223,7 +223,7 @@ test('test get pull request with modifier', async() => {
             {
                 "name": "some-test-title",
 
-                "archive_download_url": `file://./${testLogFile}.zip`
+                "archive_download_url": `file:///${__dirname}/${testLogFile}.zip`
             }
         ]
     });
@@ -283,7 +283,7 @@ test('test get pull request message with modifier', async() => {
             {
                 "name": "some-test-title",
 
-                "archive_download_url": `file://./${testLogFile}.zip`
+                "archive_download_url": `file:///${__dirname}/${testLogFile}.zip`
             }
         ]
     });
