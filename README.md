@@ -40,8 +40,8 @@ Additional optional arguments are available to customize the pull request output
     "message_file": "./output.txt",
     "title": "My Test Execution",
     "artifact_name": "defaults to title", // OPTIONAL: Defaults to title stripped of non-alphanumeric characters/spaces
-	  "modifier": "grep 'onlytheselines'", // OPTIONAL: Shell command which will be executed against the output file.  This can be used to prevent long pull request messages.
-	  "compare_branches": ["master"] // OPTIONAL: List of branches to compare to, defaults to master
+    "modifier": "grep 'onlytheselines'", // OPTIONAL: Shell command which will be executed against the output file.  This can be used to prevent long pull request messages.
+    "compare_branches": ["master"] // OPTIONAL: List of branches to compare to, defaults to master
   }
 ]
 ```
