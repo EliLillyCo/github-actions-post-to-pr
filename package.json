@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EliLillyCo/LRL_github_actions_post_to_pr.git"
+    "url": "git+https://github.com/EliLillyCo/github-actions-post-to-pr.git"
   },
   "keywords": [
     "GitHub",
@@ -19,9 +19,9 @@
   ],
   "author": "Eli Lilly",
   "bugs": {
-    "url": "https://github.com/EliLillyCo/LRL_github_actions_post_to_pr"
+    "url": "https://github.com/EliLillyCo/github-actions-post-to-pr"
   },
-  "homepage": "https://github.com/EliLillyCo/LRL_github_actions_post_to_pr",
+  "homepage": "https://github.com/EliLillyCo/github-actions-post-to-pr",
   "dependencies": {
     "@actions/artifact": "^0.3.2",
     "@actions/core": "^1.1.1",
