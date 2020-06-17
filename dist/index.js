@@ -5024,7 +5024,8 @@ return `<details><summary>Expand</summary>
 \`\`\`
 ${text}
 \`\`\`
-</details>`
+</details>
+`
   } else {
 return `\`\`\`
 ${text}

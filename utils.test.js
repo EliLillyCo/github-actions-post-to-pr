@@ -31,7 +31,7 @@ test('format markdown block', async() => {
 
 test('format markdown block collapsible', async() => {
     expect(utils.formatMarkdownBlock("test", true)).toEqual(
-        "<details><summary>Expand</summary>\n<br>\n\n```\ntest\n```\n</details>"
+        "<details><summary>Expand</summary>\n<br>\n\n```\ntest\n```\n</details>\n"
         )
 });
 
