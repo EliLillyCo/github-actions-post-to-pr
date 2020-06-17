@@ -5,8 +5,22 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 const artifact = require('@actions/artifact');
 
-function formatMarkdownBlock(text) {
-  return "```\n" + text + "\n```\n"
+
+function formatMarkdownBlock(text, collapsible) {
+  if (collapsible) {
+return `<details><summary>Expand</summary>
+<br>
+
+\`\`\`
+${text}
+\`\`\`
+</details>`
+  } else {
+return `\`\`\`
+${text}
+\`\`\`
+`
+  }
 }
 
 function applyMessageModifier(message, modifier) {

@@ -22,6 +22,7 @@ jobs:
             {
               "message_file": "./unit_test_result.txt",
               "title": "Unit Test",
-              "modifier": "grep -v '::debug::'"
+              "modifier": "grep -v '::debug::'",
+              "collapsible": True
             }
           ]

@@ -13640,35 +13640,35 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
     return output
   }
   
-async function getPrMessageBlock(octokit, run, definition) {
+// async function getPrMessageBlock(octokit, run, definition) {
 
-    var message = "";
+//     var message = "";
 
-    message += "# " + definition["title"] + "\n";
+//     message += "# " + definition["title"] + "\n";
 
-    for (const branch of definition["compare_branches"]) {
-        message += `## Previous ${branch} branch:\n\n`;
+//     for (const branch of definition["compare_branches"]) {
+//         message += `## Previous ${branch} branch:\n\n`;
 
-        const data = await readArchivedFile(octokit, run, branch,
-                                    definition.artifact_name,
-                                    definition.message_file,
-                                    definition.modifier)
+//         const data = await readArchivedFile(octokit, run, branch,
+//                                     definition.artifact_name,
+//                                     definition.message_file,
+//                                     definition.modifier)
 
-        message += utils.formatMarkdownBlock(
-        data
-        );
-    }
+//         message += utils.formatMarkdownBlock(
+//         data
+//         );
+//     }
 
-    message += "\n## This change:\n\n";
+//     message += "\n## This change:\n\n";
 
-    const data = fs.readFileSync(definition["message_file"], 'utf8')
+//     const data = fs.readFileSync(definition["message_file"], 'utf8')
 
-    message += utils.formatMarkdownBlock(
-                utils.applyMessageModifier(data, definition["modifier"])
-                );
+//     message += utils.formatMarkdownBlock(
+//                 utils.applyMessageModifier(data, definition["modifier"])
+//                 );
 
-    return message
-}
+//     return message
+// }
   
 function processDefinition(definition) {
 
