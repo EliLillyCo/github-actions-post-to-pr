@@ -2,7 +2,7 @@
 
 This github actions allows easy comparision of current and past build execution results through a PR comment.
 
-e.g. comment the last "master" branch test coverage with the current pull request test coverage.
+e.g. comment the last "main" branch test coverage with the current pull request test coverage.
 
 This works by saving a build artifacts when the action is executed on branch commits & using those artifacts to provide previous build results.
 
