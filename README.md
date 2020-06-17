@@ -18,7 +18,7 @@ Inlcude the Post to PR github action step.
 
 ```
     - name: "Post to PR"
-      uses: EliLillyCo/github-actions-post-to-pr@master
+      uses: EliLillyCo/github-actions-post-to-pr@main
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         post_to_pr_definition: |
@@ -41,7 +41,7 @@ Additional optional arguments are available to customize the pull request output
     "title": "My Test Execution",
     "artifact_name": "defaults to title", // OPTIONAL: Defaults to title stripped of non-alphanumeric characters/spaces
     "modifier": "grep 'onlytheselines'", // OPTIONAL: Shell command which will be executed against the output file.  This can be used to prevent long pull request messages.
-    "compare_branches": ["master"] // OPTIONAL: List of branches to compare to, defaults to master
+    "compare_branches": ["main"] // OPTIONAL: List of branches to compare to, defaults to master
     "collapsible": False // OPTIONAL: True/False, set to true to make PR message collapse for long messages, defaults to False
   }
 ]
@@ -52,7 +52,7 @@ Additional optional arguments are available to customize the pull request output
 # --- Example Pull Request Comment ---
 
 # Unit Test
-## Previous master branch:
+## Previous main branch:
 
 ```
 > post-to-pr@0.0.1 test /home/runner/work/github-actions-post-to-pr/github-actions-post-to-pr
