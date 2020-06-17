@@ -83,3 +83,26 @@ All files        |    94.94 |    86.36 |    90.91 |    94.94 |                  
 -----------------|----------|----------|----------|----------|-------------------|
 
 ```
+
+# Contributing
+
+Pull requests & issues welcome!
+
+## Dev Setup
+
+## Setup Dependencies
+```
+npm install
+```
+
+## Running tests
+```
+npm test
+```
+
+## Packaging (required before creating PR)
+
+```
+npm run package
+```
+
