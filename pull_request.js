@@ -9,7 +9,7 @@ const execSync = require('child_process').execSync;
 async function readArchivedFile(octokit, run, branch, archive_name, file, modifier) {
 
     const workflowId = run["workflow_id"]
-  
+
     const runData = await octokit.actions.listWorkflowRuns({
       ...github.context.repo,
       workflow_id: workflowId,
@@ -17,19 +17,19 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
       event: "push",
       status: "conclusion"
     });
-  
+
     if (!("workflow_runs" in  runData.data)) {
         return "No Workflow Runs";
     }
 
     const runs = runData.data["workflow_runs"];
-  
+
     if (runs.length <= 0) {
       return "No Workflow Runs";
     }
-  
+
     const runId = runs[0]["id"];
-  
+
     const artifactResp = await octokit.actions.listWorkflowRunArtifacts({
       ...github.context.repo,
       run_id: runId,
@@ -40,7 +40,7 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
     if (!("artifacts" in  artifactData)) {
         return "No Artifacts";
     }
-  
+
     var download_url = null
     for (const artifact of artifactData["artifacts"]) {
       if (artifact["name"] == archive_name) {
@@ -48,11 +48,11 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
         break
       }
     }
-  
+
     if (!download_url) {
       return "No Artifacts";
     }
-  
+
     const token = utils.getToken();
     const tempFile = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
     execSync(`curl -L -H "Authorization: token ${token}" ${download_url} -o ${tempFile}`)
@@ -68,7 +68,7 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
 
     return output
   }
-  
+
 async function getPrMessageBlock(octokit, run, definition) {
 
     var message = "";
@@ -100,7 +100,7 @@ async function getPrMessageBlock(octokit, run, definition) {
 
     return message
 }
-  
+
 function processDefinition(definition) {
 
 assert(
@@ -133,29 +133,33 @@ return definition
 
 
 async function getPrMessage(octokit, definitions) {
+  let run;
+  let prMessage = ""
 
-    const run = await utils.getRun(octokit);
+  try {
+    run = await utils.getRun(octokit);
+  } catch (error) {
+    return error;
+  }
 
-    var prMessage = ""
-    for (const definition of definitions) { 
-        prMessage += await getPrMessageBlock(
-            octokit,
-            run,
-            definition)
-    }
+  for (const definition of definitions) {
+      prMessage += await getPrMessageBlock(octokit, run, definition)
+  }
 
-    return prMessage
+  return prMessage
 }
 
 
 async function postPrMessage(octokit, prNumber, prMessage) {
-    const res = await octokit.issues.createComment({
-        ...github.context.repo,
-        issue_number: prNumber,
-        body: prMessage,
-      });
+  let response;
 
-    return res.data;
+  try {
+    response = await octokit.issues.createComment({ ...github.context.repo, issue_number: prNumber, body: prMessage});
+  } catch (error) {
+    return error;
+  }
+
+  return response.data;
 }
 
 

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Post to pull request with previous build results",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint index.js",
     "package": "ncc build index.js -o dist",
@@ -18,6 +19,10 @@
     "JavaScript"
   ],
   "author": "Eli Lilly",
+  "engines": {
+    "node": "14.4.0",
+    "npm": "6.14.5"
+  },
   "bugs": {
     "url": "https://github.com/EliLillyCo/github-actions-post-to-pr"
   },

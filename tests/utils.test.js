@@ -1,10 +1,13 @@
-const fs = require('fs');
-const crypto = require('crypto');
-const execSync = require('child_process').execSync;
-const utils = require('./utils');
-const process = require('process');
-const octokitFixtures = require("@octokit/fixtures");
-const github = require('@actions/github');
+import fs from 'fs';
+import crypto from 'crypto'
+import process from 'process';
+import github from '@actions/github';
+import octokitFixtures from '@octokit/fixtures';
+import child_process from 'child_process';
+
+import * as utils from './utils/index.js';
+
+const execSync = child_process.execSync;
 
 const env = Object.assign({}, process.env);
 const testLogFile = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
@@ -67,8 +70,6 @@ test('upload artifact', async() => {
     .reply(200,     {
         "id": 1
     });
-
-
 
     let error;
     try {
