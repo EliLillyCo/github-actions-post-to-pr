@@ -35,6 +35,7 @@ test('process definition', async() => {
         "message_file": "./some_file.txt",
         "title": "Some Test Title",
         "artifact_name": "some-test-title",
+        "collapsible": false,
         "modifier": null,
         "compare_branches": ["master"]
     });
@@ -49,6 +50,7 @@ test('process definition', async() => {
         "message_file": "./some_file.txt",
         "title": "Some Test Title",
         "artifact_name": "some-test-title-other",
+        "collapsible": false,
         "modifier": "some-command",
         "compare_branches": ["new-feature"]
     });

@@ -2,7 +2,7 @@
 
 This github actions allows easy comparision of current and past build execution results through a PR comment.
 
-e.g. comment the last "master" branch test coverage with the current pull request test coverage.
+e.g. comment the last "main" branch test coverage with the current pull request test coverage.
 
 This works by saving a build artifacts when the action is executed on branch commits & using those artifacts to provide previous build results.
 
@@ -18,7 +18,7 @@ Inlcude the Post to PR github action step.
 
 ```
     - name: "Post to PR"
-      uses: EliLillyCo/github-actions-post-to-pr@master
+      uses: EliLillyCo/github-actions-post-to-pr@main
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         post_to_pr_definition: |
@@ -41,7 +41,8 @@ Additional optional arguments are available to customize the pull request output
     "title": "My Test Execution",
     "artifact_name": "defaults to title", // OPTIONAL: Defaults to title stripped of non-alphanumeric characters/spaces
     "modifier": "grep 'onlytheselines'", // OPTIONAL: Shell command which will be executed against the output file.  This can be used to prevent long pull request messages.
-    "compare_branches": ["master"] // OPTIONAL: List of branches to compare to, defaults to master
+    "compare_branches": ["main"] // OPTIONAL: List of branches to compare to, defaults to master
+    "collapsible": true // OPTIONAL: true/false, set to true to make PR message collapse for long messages, defaults to False
   }
 ]
 ```
@@ -51,7 +52,7 @@ Additional optional arguments are available to customize the pull request output
 # --- Example Pull Request Comment ---
 
 # Unit Test
-## Previous master branch:
+## Previous main branch:
 
 ```
 > post-to-pr@0.0.1 test /home/runner/work/github-actions-post-to-pr/github-actions-post-to-pr
@@ -82,3 +83,26 @@ All files        |    94.94 |    86.36 |    90.91 |    94.94 |                  
 -----------------|----------|----------|----------|----------|-------------------|
 
 ```
+
+# Contributing
+
+Pull requests & issues welcome!
+
+## Dev Setup
+
+## Setup Dependencies
+```
+npm install
+```
+
+## Running tests
+```
+npm test
+```
+
+## Packaging (required before creating PR)
+
+```
+npm run package
+```
+

@@ -84,7 +84,8 @@ async function getPrMessageBlock(octokit, run, definition) {
                                     definition.modifier)
 
         message += utils.formatMarkdownBlock(
-        data
+        data,
+        definition.collapsible
         );
     }
 
@@ -93,7 +94,8 @@ async function getPrMessageBlock(octokit, run, definition) {
     const data = fs.readFileSync(definition["message_file"], 'utf8')
 
     message += utils.formatMarkdownBlock(
-                utils.applyMessageModifier(data, definition["modifier"])
+                utils.applyMessageModifier(data, definition["modifier"]),
+                definition.collapsible
                 );
 
     return message
@@ -120,6 +122,10 @@ if (!("compare_branches" in definition)) {
 
 if (!("modifier" in definition)) {
     definition["modifier"] = null;
+}
+
+if (!("collapsible" in definition)) {
+  definition["collapsible"] = false;
 }
 
 return definition

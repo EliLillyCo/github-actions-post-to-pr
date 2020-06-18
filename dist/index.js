@@ -5015,8 +5015,23 @@ const github = __webpack_require__(469);
 const core = __webpack_require__(470);
 const artifact = __webpack_require__(214);
 
-function formatMarkdownBlock(text) {
-  return "```\n" + text + "\n```\n"
+
+function formatMarkdownBlock(text, collapsible) {
+  if (collapsible) {
+return `<details><summary>Expand</summary>
+<br>
+
+\`\`\`
+${text}
+\`\`\`
+</details>
+`
+  } else {
+return `\`\`\`
+${text}
+\`\`\`
+`
+  }
 }
 
 function applyMessageModifier(message, modifier) {
@@ -13655,7 +13670,8 @@ async function getPrMessageBlock(octokit, run, definition) {
                                     definition.modifier)
 
         message += utils.formatMarkdownBlock(
-        data
+        data,
+        definition.collapsible
         );
     }
 
@@ -13664,7 +13680,8 @@ async function getPrMessageBlock(octokit, run, definition) {
     const data = fs.readFileSync(definition["message_file"], 'utf8')
 
     message += utils.formatMarkdownBlock(
-                utils.applyMessageModifier(data, definition["modifier"])
+                utils.applyMessageModifier(data, definition["modifier"]),
+                definition.collapsible
                 );
 
     return message
@@ -13691,6 +13708,10 @@ if (!("compare_branches" in definition)) {
 
 if (!("modifier" in definition)) {
     definition["modifier"] = null;
+}
+
+if (!("collapsible" in definition)) {
+  definition["collapsible"] = false;
 }
 
 return definition

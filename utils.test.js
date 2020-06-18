@@ -29,6 +29,12 @@ test('format markdown block', async() => {
     expect(utils.formatMarkdownBlock("test")).toEqual("```\ntest\n```\n")
 });
 
+test('format markdown block collapsible', async() => {
+    expect(utils.formatMarkdownBlock("test", true)).toEqual(
+        "<details><summary>Expand</summary>\n<br>\n\n```\ntest\n```\n</details>\n"
+        )
+});
+
 
 test('apply message modifier', async() => {
     expect(utils.applyMessageModifier("test\ntest2", "grep test2")).toEqual("test2\n")
