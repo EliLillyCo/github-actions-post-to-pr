@@ -1,11 +1,13 @@
-const pr = require('./pull_request');
-const process = require('process');
-const octokitFixtures = require("@octokit/fixtures");
-const github = require('@actions/github');
-const crypto = require('crypto');
-const fs = require('fs');
-const execSync = require('child_process').execSync;
+import process from 'process';
+import octokitFixtures from '@octokit/fixtures';
+import github from '@actions/github';
+import crypto from 'crypto';
+import fs from 'fs';
+import child_process from 'child_process';
 
+import * as pr from './pr/index.js';
+
+const execSync = child_process.execSync;
 
 const env = Object.assign({}, process.env);
 const testLogFile = 'tempfile'+crypto.randomBytes(4).readUInt32LE(0);
@@ -27,7 +29,7 @@ afterAll(() => {
 });
 
 test('process definition', async() => {
-    
+
     expect(pr.processDefinition({
         "message_file": "./some_file.txt",
         "title": "Some Test Title",

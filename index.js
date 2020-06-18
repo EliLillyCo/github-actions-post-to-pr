@@ -1,12 +1,11 @@
-const fs = require('fs');
-const core = require('@actions/core');
-const utils = require('./utils');
-const pullRequest = require('./pull_request');
+import fs from 'fs';
+import core from '@actions/core';
 
-
+import * as utils from './utils/index.js';
+import * as pullRequest from './pr/index.js';
 
 async function run() {
-  try { 
+  try {
     const octokit = utils.getClient();
 
     const actionEvent = JSON.parse(
@@ -14,7 +13,7 @@ async function run() {
     )
 
     const rawDefinition = core.getInput('post_to_pr_definition');
-    var definitions;
+    let definitions;
     try{
       definitions = JSON.parse(rawDefinition);
     } catch(error) {
@@ -26,19 +25,14 @@ async function run() {
 
 
     if (actionEvent.pull_request) {
-      var prMessage = await pullRequest.getPrMessage(octokit, definitions);
+      let prMessage = await pullRequest.getPrMessage(octokit, definitions);
 
-
-      await pullRequest.postPrMessage(
-        octokit,
-        actionEvent.pull_request.number,
-        prMessage
-      )
+      await pullRequest.postPrMessage(octokit, actionEvent.pull_request.number, prMessage)
     }
 
     await utils.uploadArtifacts(definitions);
 
-  } 
+  }
   catch (error) {
     core.setFailed(error);
   }
