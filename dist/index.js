@@ -13601,7 +13601,7 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
       workflow_id: workflowId,
       branch,
       event: "push",
-      status: "conclusion"
+      status: "completed"
     });
   
     if (!("workflow_runs" in  runData.data)) {
@@ -13752,6 +13752,7 @@ module.exports = {
     processDefinition,
     postPrMessage
 }
+
 
 /***/ }),
 
