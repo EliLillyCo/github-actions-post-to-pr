@@ -63,7 +63,7 @@ test('test get pull request message no branch runs', async() => {
     process.env.GITHUB_RUN_ID = "123"
 
     octokitFixtures.nock("https://api.github.com")
-    .get("/repos/test/test/actions/workflows/12345/runs?branch=master&event=push&status=conclusion")
+    .get("/repos/test/test/actions/workflows/12345/runs?branch=master&event=push&status=completed")
     .reply(200, {
         "workflow_runs": []
     });
@@ -107,7 +107,7 @@ test('test get pull request message no artifacts', async() => {
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"
     octokitFixtures.nock("https://api.github.com")
-    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=conclusion")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=completed")
     .reply(200, {
         "workflow_runs": [{"id": 12345}]
     });
@@ -155,7 +155,7 @@ test('test get pull request message without modifier', async() => {
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"
     octokitFixtures.nock("https://api.github.com")
-    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=conclusion")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=completed")
     .reply(200, {
         "workflow_runs": [{"id": 12345}]
     });
@@ -213,7 +213,7 @@ test('test get pull request with modifier', async() => {
     process.env.GITHUB_REPOSITORY = "test/test"
     process.env.GITHUB_RUN_ID = "123"
     octokitFixtures.nock("https://api.github.com")
-    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=conclusion")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=completed")
     .reply(200, {
         "workflow_runs": [{"id": 12345}]
     });
@@ -273,7 +273,7 @@ test('test get pull request message with modifier', async() => {
     });
 
     octokitFixtures.nock("https://api.github.com")
-    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=conclusion")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=completed")
     .reply(200, {
         "workflow_runs": [{"id": 12345}]
     });
