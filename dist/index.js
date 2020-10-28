@@ -13773,8 +13773,12 @@ async function readArchivedFile(octokit, run, branch, archive_name, file, modifi
     var download_url = null
     for (const artifact of artifactData["artifacts"]) {
       if (artifact["name"] == archive_name) {
-        download_url = artifact["archive_download_url"]
-        break
+        if (artifact["expired"]) {
+          return "Artifact has expired";
+        } else {
+          download_url = artifact["archive_download_url"];
+          break;
+        }
       }
     }
   
