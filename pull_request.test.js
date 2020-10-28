@@ -334,3 +334,59 @@ test('post message', async() => {
         "test123"
     )).toEqual({"id": 1});
 });
+
+
+test('test get pull request message expired artifact', async() => {
+
+    process.env.GITHUB_REPOSITORY = "test/test"
+    process.env.GITHUB_RUN_ID = "123"
+
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/runs/123")
+    .reply(200,     {
+        "workflow_id": 1234
+    });
+
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/workflows/1234/runs?branch=master&event=push&status=completed")
+    .reply(200, {
+        "workflow_runs": [{"id": 12345}]
+    });
+    octokitFixtures.nock("https://api.github.com")
+    .get("/repos/test/test/actions/runs/12345/artifacts")
+    .reply(200, {
+        "total_count": 1,
+        "artifacts": [
+            {
+                "name": "some-test-title",
+                "expired": true,
+                "archive_download_url": `file:///${__dirname}/${testLogFile}.zip`
+            }
+        ]
+    });
+
+expect(await pr.getPrMessage(
+    new github.GitHub("1234"),
+    [{
+        "message_file": "./" + testLogFile,
+        "title": "Some Test Title",
+        "artifact_name": "some-test-title",
+        "modifier": "grep logline1",
+        "compare_branches": ["master"]
+    }])).toEqual(
+`# Some Test Title
+## Previous master branch:
+
+\`\`\`
+Artifact has expired
+\`\`\`
+
+## This change:
+
+\`\`\`
+logline1
+
+\`\`\`
+`);
+
+});
