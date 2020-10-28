@@ -105,4 +105,3 @@ npm test
 ```
 npm run package
 ```
-
