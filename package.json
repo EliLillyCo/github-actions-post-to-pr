@@ -24,12 +24,12 @@
   "homepage": "https://github.com/EliLillyCo/github-actions-post-to-pr",
   "dependencies": {
     "@actions/artifact": "^0.3.2",
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "@actions/github": "2.2.0"
   },
   "devDependencies": {
     "@octokit/fixtures": "21.0.5",
-    "@zeit/ncc": "^0.20.5",
+    "@vercel/ncc": "^0.36.1",
     "eslint": "^6.3.0",
     "eslint-plugin-jest": "^23.13.0",
     "jest": "^24.9.0"
