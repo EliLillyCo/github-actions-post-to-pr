@@ -1,11 +1,6 @@
-# Github Actions Post to Pull Request with Previous Build Result Comparison
+# Github Actions Post to Pull Request
 
-This github actions allows easy comparision of current and past build execution results through a PR comment.
-
-e.g. comment the last "main" branch test coverage with the current pull request test coverage.
-
-This works by saving a build artifacts when the action is executed on branch commits & using those artifacts to provide previous build results.
-
+This github actions allows easy posting of formatted build results into GitHub PRs.
 
 ## Setup
 Durring the github action build, create a build output text file.
@@ -41,7 +36,6 @@ Additional optional arguments are available to customize the pull request output
     "title": "My Test Execution",
     "artifact_name": "defaults to title", // OPTIONAL: Defaults to title stripped of non-alphanumeric characters/spaces
     "modifier": "grep 'onlytheselines'", // OPTIONAL: Shell command which will be executed against the output file.  This can be used to prevent long pull request messages.
-    "compare_branches": ["main"] // OPTIONAL: List of branches to compare to, defaults to master
     "collapsible": true // OPTIONAL: true/false, set to true to make PR message collapse for long messages, defaults to False
   }
 ]
@@ -52,20 +46,6 @@ Additional optional arguments are available to customize the pull request output
 # --- Example Pull Request Comment ---
 
 # Unit Test
-## Previous main branch:
-
-```
-> post-to-pr@0.0.1 test /home/runner/work/github-actions-post-to-pr/github-actions-post-to-pr
-> eslint *.js && jest --collect-coverage
-
------------------|----------|----------|----------|----------|-------------------|
-File             |  % Stmts | % Branch |  % Funcs |  % Lines | Uncovered Line #s |
------------------|----------|----------|----------|----------|-------------------|
-All files        |    94.94 |    86.36 |    90.91 |    94.94 |                   |
- pull_request.js |    96.36 |       85 |      100 |    96.36 |             21,40 |
- utils.js        |    91.67 |      100 |    83.33 |    91.67 |             42,44 |
------------------|----------|----------|----------|----------|-------------------|
-```
 
 ## This change:
 
