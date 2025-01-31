@@ -29999,8 +29999,6 @@ async function run() {
       )
     }
 
-    await utils.uploadArtifacts(definitions);
-
   } 
   catch (error) {
     core.setFailed(error);
