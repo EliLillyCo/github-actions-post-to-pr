@@ -81,14 +81,14 @@ test('test get pull request message no branch runs', async() => {
             "modifier": null,
             "compare_branches": ["master"]
         })).toEqual(
-    `# Some Test Title
-## Previous master branch:
+    `##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 No Workflow Runs
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
@@ -129,14 +129,14 @@ expect(await pr.getPrMessageBlock(
         "modifier": null,
         "compare_branches": ["master"]
     })).toEqual(
-`# Some Test Title
-## Previous master branch:
+`##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 No Artifacts
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
@@ -184,8 +184,8 @@ expect(await pr.getPrMessageBlock(
         "modifier": null,
         "compare_branches": ["master"]
     })).toEqual(
-`# Some Test Title
-## Previous master branch:
+`##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 logline1
@@ -195,7 +195,7 @@ logline4
 logline5
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
@@ -242,15 +242,15 @@ expect(await pr.getPrMessageBlock(
         "modifier": "grep logline1",
         "compare_branches": ["master"]
     })).toEqual(
-`# Some Test Title
-## Previous master branch:
+`##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 logline1
 
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
@@ -299,15 +299,15 @@ expect(await pr.getPrMessage(
         "modifier": "grep logline1",
         "compare_branches": ["master"]
     }])).toEqual(
-`# Some Test Title
-## Previous master branch:
+`##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 logline1
 
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
@@ -374,14 +374,14 @@ expect(await pr.getPrMessage(
         "modifier": "grep logline1",
         "compare_branches": ["master"]
     }])).toEqual(
-`# Some Test Title
-## Previous master branch:
+`##### Some Test Title
+###### Previous master branch:
 
 \`\`\`
 Artifact has expired
 \`\`\`
 
-## This change:
+###### This change:
 
 \`\`\`
 logline1
